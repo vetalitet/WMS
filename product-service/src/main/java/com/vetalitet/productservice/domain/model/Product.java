@@ -11,8 +11,9 @@ public class Product {
     private Float price;
     private ProductCategory productCategory;
 
-    public Product(String name, ProductCategory productCategory) {
+    public Product(String name, Float price, ProductCategory productCategory) {
         this.name = name;
+        this.price = price;
         this.productCategory = productCategory;
     }
 }

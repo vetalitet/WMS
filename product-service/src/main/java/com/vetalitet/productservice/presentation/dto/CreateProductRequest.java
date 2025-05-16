@@ -8,10 +8,11 @@ import lombok.Data;
 public class CreateProductRequest {
 
     private String name;
+    private Float price;
     private ProductCategoryDto productCategoryDto;
 
     public Product toDomain() {
-        return new Product(name, new ProductCategory(productCategoryDto.id, productCategoryDto.name));
+        return new Product(name, price, new ProductCategory(productCategoryDto.id, productCategoryDto.name));
     }
 
     @Data

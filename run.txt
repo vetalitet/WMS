@@ -1,0 +1,4 @@
+to run mysql on docker do:
+docker-compose up -d
+docker exec -it my-mysql mysql -u root -p
+SHOW DATABASES;

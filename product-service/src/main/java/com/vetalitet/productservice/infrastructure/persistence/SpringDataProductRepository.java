@@ -1,12 +1,13 @@
 package com.vetalitet.productservice.infrastructure.persistence;
 
+import com.vetalitet.CommonException;
 import com.vetalitet.productservice.domain.model.Product;
 import com.vetalitet.productservice.domain.repository.ProductRepository;
 import com.vetalitet.productservice.infrastructure.persistence.entity.ProductCategoryEntity;
 import com.vetalitet.productservice.infrastructure.persistence.entity.ProductEntity;
 import com.vetalitet.productservice.infrastructure.persistence.mappers.ProductMapper;
-import com.vetalitet.productservice.presentation.dto.ProductCreationException;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class SpringDataProductRepository implements ProductRepository {
         final String categoryName = product.getProductCategory().getName();
         ProductCategoryEntity productCategoryEntity = productCategoryRepository
                 .findByIdAndName(categoryId, categoryName)
-                .orElseThrow(() -> new ProductCreationException("Unknown product category"));
+                .orElseThrow(() -> new CommonException("Unknown product category", HttpStatus.BAD_REQUEST));
 
         final ProductEntity productEntity = productMapper.toEntity(product);
         productEntity.setProductCategory(productCategoryEntity);

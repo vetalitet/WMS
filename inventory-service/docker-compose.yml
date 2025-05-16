@@ -2,9 +2,9 @@ version: '3.8'
 services:
   mysql:
     image: mysql:8.0
-    container_name: my-mysql-product
+    container_name: my-mysql-inventory
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: product-service-db
+      MYSQL_DATABASE: inventory-service-db
     ports:
-      - "3306:3306"
+      - "3307:3306"

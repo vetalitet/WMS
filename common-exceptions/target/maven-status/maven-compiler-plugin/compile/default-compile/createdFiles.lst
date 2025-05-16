@@ -1,0 +1,3 @@
+com\vetalitet\CommonException.class
+com\vetalitet\GlobalExceptionHandler.class
+com\vetalitet\ErrorResponse.class
