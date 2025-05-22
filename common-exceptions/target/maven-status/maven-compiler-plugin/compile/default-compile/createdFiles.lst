@@ -1,3 +1,4 @@
-com\vetalitet\CommonException.class
 com\vetalitet\GlobalExceptionHandler.class
+com\vetalitet\CommonException.class
+com\vetalitet\ExceptionUtils.class
 com\vetalitet\ErrorResponse.class

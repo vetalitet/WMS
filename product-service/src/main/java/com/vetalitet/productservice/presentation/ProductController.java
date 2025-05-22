@@ -4,7 +4,7 @@ import com.vetalitet.productservice.application.usecase.CreateProductUseCase;
 import com.vetalitet.productservice.application.usecase.GetAllProductsUseCase;
 import com.vetalitet.productservice.application.usecase.GetProductByIdUseCase;
 import com.vetalitet.productservice.domain.model.Product;
-import com.vetalitet.productservice.presentation.dto.CreateProductRequest;
+import com.vetalitet.productservice.presentation.request.CreateProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
