@@ -44,9 +44,14 @@ public class SpringDataProductRepository implements ProductRepository {
     }
 
     @Override
-    public Optional<Product> findById(Long id) {
+    public Optional<Product> findProductById(Long id) {
         final Optional<ProductEntity> productEntity = productRepository.findById(id);
         return productEntity.map(productMapper::toDomain);
+    }
+
+    @Override
+    public void deleteProductById(Long id) {
+        productRepository.deleteById(id);
     }
 
 }

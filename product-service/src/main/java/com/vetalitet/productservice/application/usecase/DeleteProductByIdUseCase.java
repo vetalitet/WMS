@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class GetProductByIdUseCase {
+public class DeleteProductByIdUseCase {
 
     private final ProductRepository productRepository;
 
-    public boolean existsById(Long id) {
-        return productRepository.findProductById(id).isPresent();
+    public void deleteProductById(Long id) {
+        productRepository.deleteProductById(id);
     }
 
 }

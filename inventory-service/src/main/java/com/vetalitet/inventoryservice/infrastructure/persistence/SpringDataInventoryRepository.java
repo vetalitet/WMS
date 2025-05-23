@@ -27,4 +27,9 @@ public class SpringDataInventoryRepository implements InventoryRepository {
         return inventoryEntityList.stream().map(inventoryMapper::toDomain).toList();
     }
 
+    @Override
+    public void deleteInventoryByProductId(Long productId) {
+        jpaInventoryRepository.deleteById(productId);
+    }
+
 }

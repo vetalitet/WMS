@@ -24,4 +24,8 @@ public class InventoryWebClient {
                 .block();
     }
 
+    public void deleteInventoryByProductId(Long productId) {
+
+    }
+
 }

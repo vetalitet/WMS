@@ -28,4 +28,13 @@ public class ProductWebClient {
                 .block();
     }
 
+    public void deleteProductById(Long id) {
+        webClient
+                .delete()
+                .uri("/api/products/{id}", id)
+                .retrieve()
+                .toBodilessEntity()
+                .block();
+    }
+
 }

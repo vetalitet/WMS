@@ -1,6 +1,7 @@
 package com.vetalitet.productservice.presentation;
 
 import com.vetalitet.productservice.application.usecase.CreateProductUseCase;
+import com.vetalitet.productservice.application.usecase.DeleteProductByIdUseCase;
 import com.vetalitet.productservice.application.usecase.GetAllProductsUseCase;
 import com.vetalitet.productservice.application.usecase.GetProductByIdUseCase;
 import com.vetalitet.productservice.domain.model.Product;
@@ -19,6 +20,7 @@ public class ProductController {
     private final CreateProductUseCase createProductUseCase;
     private final GetAllProductsUseCase getAllProductsUseCase;
     private final GetProductByIdUseCase getProductByIdUseCase;
+    private final DeleteProductByIdUseCase deleteProductByIdUseCase;
 
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody CreateProductRequest createProductRequest) {
@@ -36,6 +38,12 @@ public class ProductController {
     public ResponseEntity<Void> checkProductExists(@PathVariable Long id) {
         boolean exists = getProductByIdUseCase.existsById(id);
         return exists ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        deleteProductByIdUseCase.deleteProductById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

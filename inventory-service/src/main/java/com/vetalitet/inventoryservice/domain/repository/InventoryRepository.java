@@ -7,4 +7,5 @@ import java.util.List;
 public interface InventoryRepository {
     void save(Inventory inventory);
     List<Inventory> getAll();
+    void deleteInventoryByProductId(Long productId);
 }
