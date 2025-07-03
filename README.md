@@ -1,4 +1,5 @@
 WMS – Spring Boot Microservices Demo
+
 This project is a Warehouse Management System (WMS) prototype built with a microservice architecture using Spring Boot, Hibernate, and Docker Compose. It was developed as part of learning how to design and implement microservices, including containerized infrastructure.
 
 Tech Stack
