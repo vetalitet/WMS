@@ -3,14 +3,14 @@ package com.vetalitet.inventoryservice.infrastructure.webclient;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestClient;
 
 @Component
 @AllArgsConstructor
 public class ProductWebClient {
 
-    private final WebClient productServiceClient;
+    private final RestClient productServiceClient;
 
     public boolean checkProductExists(Long productId) {
         try {
@@ -18,12 +18,11 @@ public class ProductWebClient {
                     .get()
                     .uri("/api/products/{id}/exists", productId)
                     .retrieve()
-                    .toBodilessEntity()
-                    .block(); // block for sync result
+                    .toBodilessEntity();
+
             return true;
-        } catch (WebClientResponseException e) {
-            return e.getStatusCode() != HttpStatus.NOT_FOUND;
+        } catch (HttpStatusCodeException ex) {
+            return ex.getStatusCode() != HttpStatus.NOT_FOUND;
         }
     }
-
 }

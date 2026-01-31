@@ -4,37 +4,41 @@ import com.vetalitet.ErrorResponse;
 import com.vetalitet.ExceptionUtils;
 import com.vetalitet.facadeservice.infrastructure.dto.ProductDto;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestClient;
 
 @Component
 public class ProductWebClient {
 
-    private final WebClient webClient;
+    private final RestClient restClient;
 
-    public ProductWebClient(@Qualifier("productClient") WebClient productServiceClient) {
-        this.webClient = productServiceClient;
+    public ProductWebClient(@Qualifier("productClient") RestClient productServiceClient) {
+        this.restClient = productServiceClient;
     }
 
     public ProductDto createProduct(ProductDto productDto) {
-        return webClient
-                .post()
-                .uri("/api/products")
-                .bodyValue(productDto)
-                .retrieve()
-                .onStatus(HttpStatusCode::isError, ExceptionUtils.mapToCommonException(ErrorResponse.class))
-                .bodyToMono(ProductDto.class)
-                .block();
+        try {
+            return restClient.post()
+                    .uri("/api/products")
+                    .body(productDto)
+                    .retrieve()
+                    .body(ProductDto.class);
+        } catch (HttpStatusCodeException ex) {
+            ErrorResponse body = ex.getResponseBodyAs(ErrorResponse.class);
+            throw ExceptionUtils.toCommonException(ex.getStatusCode(), body);
+        }
     }
 
     public void deleteProductById(Long id) {
-        webClient
-                .delete()
-                .uri("/api/products/{id}", id)
-                .retrieve()
-                .toBodilessEntity()
-                .block();
+        try {
+            restClient.delete()
+                    .uri("/api/products/{id}", id)
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (HttpStatusCodeException ex) {
+            throw ExceptionUtils.toCommonException(ex.getStatusCode(), null);
+        }
     }
 
 }

@@ -45,11 +45,3 @@ if %errorlevel% neq 0 (
     goto wait_product_db
 )
 echo ✅ MySQL product-service готовий!
-
-:: Додавання початкових даних у product-service
-echo Додавання початкових даних у product-service...
-docker exec -i my-mysql-product mysql -u root -proot product-service-db < "%~dp0product-service/init-data.sql"
-if %errorlevel% neq 0 (
-    echo ❌ Помилка при додаванні даних у product-service-db
-    exit /b 1
-)

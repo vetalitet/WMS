@@ -3,14 +3,14 @@ package com.vetalitet.facadeservice.infrastructure.webclient;
 import com.vetalitet.facadeservice.infrastructure.dto.InventoryDto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 @Component
 public class InventoryWebClient {
 
-    private final WebClient webClient;
+    private final RestClient webClient;
 
-    public InventoryWebClient(@Qualifier("inventoryClient") WebClient webClient) {
+    public InventoryWebClient(@Qualifier("inventoryClient") RestClient webClient) {
         this.webClient = webClient;
     }
 
@@ -18,10 +18,9 @@ public class InventoryWebClient {
         return webClient
                 .post()
                 .uri("/api/inventory")
-                .bodyValue(inventoryDto)
+                .body(inventoryDto)
                 .retrieve()
-                .bodyToMono(InventoryDto.class)
-                .block();
+                .body(InventoryDto.class);
     }
 
     public void deleteInventoryByProductId(Long productId) {

@@ -3,21 +3,21 @@ package com.vetalitet.facadeservice.infrastructure.config;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 @Component
 public class WebClientConfig {
 
     @Bean
     @Qualifier("productClient")
-    public WebClient productServiceClient() {
-        return WebClient.builder().baseUrl("http://localhost:8081").build();
+    public RestClient productServiceClient() {
+        return RestClient.builder().baseUrl("http://localhost:8081").build();
     }
 
     @Bean
     @Qualifier("inventoryClient")
-    public WebClient inventoryServiceClient() {
-        return WebClient.builder().baseUrl("http://localhost:8082").build();
+    public RestClient inventoryServiceClient() {
+        return RestClient.builder().baseUrl("http://localhost:8082").build();
     }
 
 }
