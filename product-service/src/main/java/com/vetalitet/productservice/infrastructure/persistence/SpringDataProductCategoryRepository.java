@@ -7,6 +7,7 @@ import com.vetalitet.productservice.infrastructure.persistence.mappers.ProductMa
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -26,9 +27,29 @@ public class SpringDataProductCategoryRepository implements ProductCategoryRepos
     }
 
     @Override
+    public List<ProductCategory> saveAll(List<ProductCategory> categories) {
+        List<ProductCategoryEntity> entities = categories.stream()
+                .map(productMapper::toEntity)
+                .toList();
+
+        List<ProductCategoryEntity> savedEntities = productCategoryRepository.saveAll(entities);
+
+        for (int i = 0; i < categories.size(); i++) {
+            categories.get(i).setId(savedEntities.get(i).getId());
+        }
+
+        return categories;
+    }
+
+    @Override
     public Optional<ProductCategory> findById(Long id) {
         Optional<ProductCategoryEntity> productCategoryEntity = productCategoryRepository.findById(id);
         return productCategoryEntity.map(productMapper::toDomain);
+    }
+
+    @Override
+    public long count() {
+        return productCategoryRepository.count();
     }
 
 }

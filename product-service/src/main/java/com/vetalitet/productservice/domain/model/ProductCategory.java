@@ -10,4 +10,8 @@ import lombok.Setter;
 public class ProductCategory {
     private Long id;
     private String name;
+
+    public ProductCategory(String name) {
+        this.name = name;
+    }
 }
