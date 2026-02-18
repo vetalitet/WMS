@@ -1,13 +1,11 @@
-package com.vetalitet.productservice.infrastructure.persistence;
+package com.vetalitet.productservice.infrastructure.persistence.repository;
 
-import com.vetalitet.CommonException;
 import com.vetalitet.productservice.domain.model.Product;
+import com.vetalitet.productservice.domain.model.ProductCategory;
 import com.vetalitet.productservice.domain.repository.ProductRepository;
-import com.vetalitet.productservice.infrastructure.persistence.entity.ProductCategoryEntity;
 import com.vetalitet.productservice.infrastructure.persistence.entity.ProductEntity;
 import com.vetalitet.productservice.infrastructure.persistence.mappers.ProductMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,16 +21,8 @@ public class SpringDataProductRepository implements ProductRepository {
 
     @Override
     public Product save(Product product) {
-        final Long categoryId = product.getProductCategory().getId();
-        final String categoryName = product.getProductCategory().getName();
-        ProductCategoryEntity productCategoryEntity = productCategoryRepository
-                .findByIdAndName(categoryId, categoryName)
-                .orElseThrow(() -> new CommonException("Unknown product category", HttpStatus.BAD_REQUEST));
-
         final ProductEntity productEntity = productMapper.toEntity(product);
-        productEntity.setProductCategory(productCategoryEntity);
         productRepository.save(productEntity);
-
         product.setId(productEntity.getId());
         return product;
     }
@@ -47,6 +37,13 @@ public class SpringDataProductRepository implements ProductRepository {
     public Optional<Product> findProductById(Long id) {
         final Optional<ProductEntity> productEntity = productRepository.findById(id);
         return productEntity.map(productMapper::toDomain);
+    }
+
+    @Override
+    public Optional<ProductCategory> findProductCategoryById(Long id) {
+        return productCategoryRepository
+                .findById(id)
+                .map(productMapper::toDomain);
     }
 
     @Override

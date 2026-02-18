@@ -16,7 +16,8 @@ public class ProductMapper {
                 entity.getId(),
                 entity.getName(),
                 entity.getPrice(),
-                toDomain(entity.getProductCategory())
+                toDomain(entity.getProductCategory()),
+                entity.getProductStatus()
         );
     }
 
@@ -33,9 +34,11 @@ public class ProductMapper {
         if (product == null) return null;
 
         ProductEntity entity = new ProductEntity();
+        entity.setId(product.getId());
         entity.setName(product.getName());
         entity.setPrice(product.getPrice());
         entity.setProductCategory(toEntity(product.getProductCategory()));
+        entity.setProductStatus(product.getProductStatus());
         return entity;
     }
 
@@ -43,6 +46,7 @@ public class ProductMapper {
         if (category == null) return null;
 
         ProductCategoryEntity entity = new ProductCategoryEntity();
+        entity.setId(category.getId());
         entity.setName(category.getName());
         return entity;
     }

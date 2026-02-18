@@ -1,4 +1,4 @@
-package com.vetalitet;
+package com.vetalitet.exception.core;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

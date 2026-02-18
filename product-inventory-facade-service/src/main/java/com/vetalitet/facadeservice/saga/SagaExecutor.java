@@ -1,14 +1,14 @@
 package com.vetalitet.facadeservice.saga;
 
-import java.util.ArrayDeque;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 
+@Component
 public class SagaExecutor {
 
     private final List<SagaStep> steps = new ArrayList<>();
-    private final Deque<SagaStep> executedSteps = new ArrayDeque<>();
 
     public SagaExecutor addStep(Runnable action, Runnable compensation) {
         steps.add(new SagaStep(action, compensation));
@@ -16,17 +16,20 @@ public class SagaExecutor {
     }
 
     public void execute() {
-        for (SagaStep step : steps) {
-            try {
-                step.execute();
-                executedSteps.push(step);
-            } catch (Exception e) {
-                while (!executedSteps.isEmpty()) {
-                    executedSteps.pop().compensate();
-                }
-                throw e;
+        List<SagaStep> executedSteps = new ArrayList<>();
+
+        try {
+            for (SagaStep step : steps) {
+                step.action().run();
+                executedSteps.add(step);
             }
+        } catch (Exception e) {
+            for (int i = executedSteps.size() - 1; i >= 0; i--) {
+                executedSteps.get(i).compensation().run();
+            }
+            throw e;
         }
     }
 
+    private record SagaStep(Runnable action, Runnable compensation) {}
 }

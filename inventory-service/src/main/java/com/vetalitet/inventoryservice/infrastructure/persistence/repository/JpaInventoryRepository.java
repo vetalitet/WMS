@@ -1,4 +1,4 @@
-package com.vetalitet.inventoryservice.infrastructure.persistence;
+package com.vetalitet.inventoryservice.infrastructure.persistence.repository;
 
 import com.vetalitet.inventoryservice.infrastructure.persistence.entity.InventoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

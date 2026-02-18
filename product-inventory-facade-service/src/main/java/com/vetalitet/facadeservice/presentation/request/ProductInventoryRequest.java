@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class ProductInventoryRequest {
-    private Long id;
     private String name;
     private Float price;
     private ProductCategoryDto productCategory;

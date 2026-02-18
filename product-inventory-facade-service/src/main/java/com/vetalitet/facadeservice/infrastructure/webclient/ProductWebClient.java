@@ -1,15 +1,14 @@
 package com.vetalitet.facadeservice.infrastructure.webclient;
 
-import com.vetalitet.ErrorResponse;
-import com.vetalitet.ExceptionUtils;
+import com.vetalitet.dto.CommonProductStatus;
+import com.vetalitet.dto.CommonUpdateProductStatusRequest;
 import com.vetalitet.facadeservice.infrastructure.dto.ProductDto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClient;
 
 @Component
-public class ProductWebClient {
+public class ProductWebClient extends AbstractRestClient {
 
     private final RestClient restClient;
 
@@ -18,27 +17,23 @@ public class ProductWebClient {
     }
 
     public ProductDto createProduct(ProductDto productDto) {
-        try {
-            return restClient.post()
-                    .uri("/api/products")
-                    .body(productDto)
-                    .retrieve()
-                    .body(ProductDto.class);
-        } catch (HttpStatusCodeException ex) {
-            ErrorResponse body = ex.getResponseBodyAs(ErrorResponse.class);
-            throw ExceptionUtils.toCommonException(ex.getStatusCode(), body);
-        }
+        return execute(() ->
+                restClient.post()
+                        .uri("/api/products")
+                        .body(productDto)
+                        .retrieve()
+                        .body(ProductDto.class), "Product");
     }
 
-    public void deleteProductById(Long id) {
-        try {
-            restClient.delete()
-                    .uri("/api/products/{id}", id)
+    public void updateStatus(Long id, CommonProductStatus status) {
+        execute(() -> {
+            restClient.patch()
+                    .uri("/api/products/{id}/status", id)
+                    .body(new CommonUpdateProductStatusRequest(status))
                     .retrieve()
                     .toBodilessEntity();
-        } catch (HttpStatusCodeException ex) {
-            throw ExceptionUtils.toCommonException(ex.getStatusCode(), null);
-        }
+            return null;
+        }, "Product");
     }
 
 }

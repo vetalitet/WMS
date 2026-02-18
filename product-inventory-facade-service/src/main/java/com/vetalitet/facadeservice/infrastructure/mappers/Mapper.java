@@ -18,6 +18,7 @@ public class Mapper {
                 entity.getName(),
                 entity.getPrice(),
                 toDomain(entity.getProductCategory()),
+                entity.getProductStatus(),
                 0L
         );
     }
@@ -28,7 +29,8 @@ public class Mapper {
         return new ProductDto(
                 domain.getName(),
                 domain.getPrice(),
-                toProductDto(domain.getProductCategory())
+                toProductDto(domain.getProductCategory()),
+                domain.getProductStatus()
         );
     }
 
@@ -58,4 +60,6 @@ public class Mapper {
                 product.getQuantity()
         );
     }
+
+
 }
