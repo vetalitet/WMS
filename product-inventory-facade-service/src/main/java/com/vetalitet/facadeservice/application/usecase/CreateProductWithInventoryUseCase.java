@@ -2,6 +2,7 @@ package com.vetalitet.facadeservice.application.usecase;
 
 import com.vetalitet.dto.CommonProductStatus;
 import com.vetalitet.facadeservice.application.service.OperationService;
+import com.vetalitet.facadeservice.domain.model.OperationStatus;
 import com.vetalitet.facadeservice.domain.model.Product;
 import com.vetalitet.facadeservice.infrastructure.dto.InventoryDto;
 import com.vetalitet.facadeservice.infrastructure.dto.ProductDto;
@@ -28,8 +29,16 @@ public class CreateProductWithInventoryUseCase {
     public Product createProduct(UUID requestId, Product product) {
         var operation = operationService.reserve(requestId);
         try {
-            final ProductDto createdProduct = createPendingProduct(product);
-            operationService.markInProgress(operation.getOperationId(), createdProduct.getId());
+            ProductDto createdProduct;
+            if (operation.getProductId() == null) {
+                createdProduct = createPendingProduct(product);
+                operationService.markInProgress(operation.getOperationId(), createdProduct.getId());
+            } else {
+                createdProduct = productWebClient.getProductById(operation.getProductId());
+                if (operation.getStatus() == OperationStatus.FAILED) {
+                    operationService.markInProgress(operation.getOperationId(), operation.getProductId());
+                }
+            }
             executeSaga(createdProduct.getId(), product.getQuantity());
             markProductActive(createdProduct.getId());
             operationService.markCompleted(operation.getOperationId());

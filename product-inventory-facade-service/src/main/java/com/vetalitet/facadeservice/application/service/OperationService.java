@@ -20,23 +20,27 @@ public class OperationService {
 
     @Transactional
     public ProductOperation reserve(UUID requestId) {
-        try {
-            return repository.save(
-                    new ProductOperation(
-                            null,
-                            requestId,
-                            null,
-                            OperationStatus.NEW,
-                            null
-                    )
-            );
-        } catch (DataIntegrityViolationException e) {
-            throw new CommonException(
+        return repository.findByRequestId(requestId)
+                .map(this::handleExistingOperation)
+                .orElseGet(() ->
+                        repository.save(ProductOperation.newOperation(requestId))
+                );
+    }
+
+    private ProductOperation handleExistingOperation(ProductOperation operation) {
+        return switch (operation.getStatus()) {
+            case COMPLETED -> throw new CommonException(
                     "Request already processed",
                     HttpStatus.CONFLICT
             );
-        }
+            case IN_PROGRESS -> throw new CommonException(
+                    "Request is still processing",
+                    HttpStatus.CONFLICT
+            );
+            case FAILED, NEW -> operation;
+        };
     }
+
 
     @Transactional
     public void markInProgress(Long operationId, Long productId) {

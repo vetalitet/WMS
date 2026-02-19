@@ -25,6 +25,16 @@ public class ProductWebClient extends AbstractRestClient {
                         .body(ProductDto.class), "Product");
     }
 
+    public ProductDto getProductById(Long id) {
+        return execute(() ->
+                        restClient.get()
+                                .uri("/api/products/{id}", id)
+                                .retrieve()
+                                .body(ProductDto.class),
+                "Product"
+        );
+    }
+
     public void updateStatus(Long id, CommonProductStatus status) {
         execute(() -> {
             restClient.patch()

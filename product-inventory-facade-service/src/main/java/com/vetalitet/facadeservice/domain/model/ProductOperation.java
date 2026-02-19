@@ -18,4 +18,14 @@ public class ProductOperation {
     private OperationStatus status;
     private Instant createdAt;
 
+    public static ProductOperation newOperation(UUID requestId) {
+        return new ProductOperation(
+                null,
+                requestId,
+                null,
+                OperationStatus.NEW,
+                null
+        );
+    }
+
 }

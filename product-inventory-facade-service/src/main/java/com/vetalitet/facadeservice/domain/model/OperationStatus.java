@@ -4,6 +4,5 @@ public enum OperationStatus {
     NEW,
     IN_PROGRESS,
     COMPLETED,
-    FAILED,
-    COMPENSATED
+    FAILED
 }

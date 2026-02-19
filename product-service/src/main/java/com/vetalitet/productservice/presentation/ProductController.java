@@ -39,6 +39,12 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+        Product product = getProductByIdUseCase.getById(id);
+        return ResponseEntity.ok(product);
+    }
+
     @GetMapping("/{id}/exists")
     public ResponseEntity<Void> checkProductExists(@PathVariable Long id) {
         boolean exists = getProductByIdUseCase.existsById(id);
