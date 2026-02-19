@@ -1,6 +1,6 @@
 package com.vetalitet.inventoryservice.application.usecase;
 
-import com.vetalitet.CommonException;
+import com.vetalitet.exception.core.CommonException;
 import com.vetalitet.inventoryservice.domain.model.Inventory;
 import com.vetalitet.inventoryservice.domain.repository.InventoryRepository;
 import com.vetalitet.inventoryservice.infrastructure.webclient.ProductWebClient;

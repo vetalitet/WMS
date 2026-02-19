@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 @Component
-public class InventoryWebClient {
+public class InventoryWebClient extends AbstractRestClient {
 
     private final RestClient webClient;
 
@@ -15,16 +15,12 @@ public class InventoryWebClient {
     }
 
     public InventoryDto createInventory(InventoryDto inventoryDto) {
-        return webClient
-                .post()
-                .uri("/api/inventory")
-                .body(inventoryDto)
-                .retrieve()
-                .body(InventoryDto.class);
-    }
-
-    public void deleteInventoryByProductId(Long productId) {
-
+        return execute(() ->
+                webClient.post()
+                        .uri("/api/inventory")
+                        .body(inventoryDto)
+                        .retrieve()
+                        .body(InventoryDto.class), "Inventory");
     }
 
 }

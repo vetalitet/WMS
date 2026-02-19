@@ -1,4 +1,4 @@
-package com.vetalitet.productservice.infrastructure.persistence;
+package com.vetalitet.productservice.infrastructure.persistence.repository;
 
 import com.vetalitet.productservice.domain.model.ProductCategory;
 import com.vetalitet.productservice.domain.repository.ProductCategoryRepository;

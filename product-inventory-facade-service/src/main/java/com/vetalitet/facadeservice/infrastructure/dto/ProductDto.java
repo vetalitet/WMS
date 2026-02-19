@@ -10,11 +10,13 @@ public class ProductDto {
     private String name;
     private Float price;
     private ProductCategoryDto productCategory;
+    private ProductStatus productStatus;
 
-    public ProductDto(String name, Float price, ProductCategoryDto productCategoryDto) {
+    public ProductDto(String name, Float price, ProductCategoryDto productCategoryDto, ProductStatus productStatus) {
         this.name = name;
         this.price = price;
         this.productCategory = productCategoryDto;
+        this.productStatus = productStatus;
     }
 
 }
